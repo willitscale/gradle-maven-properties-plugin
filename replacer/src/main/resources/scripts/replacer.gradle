@@ -1,0 +1,17 @@
+task replacer(type: Copy) {
+
+    def inc = []
+    def exc = []
+
+    from("$buildDir/main") {
+        include inc
+        exclude exc
+    }
+
+    into 'build/explodedWar'
+
+    expand(copyright: '2009', version: '2.3.1')
+    expand(project.properties)
+
+    filteringCharset = 'UTF-8'
+}

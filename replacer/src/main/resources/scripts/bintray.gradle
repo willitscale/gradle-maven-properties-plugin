@@ -1,0 +1,30 @@
+apply plugin: 'com.jfrog.bintray'
+
+// Bintray
+Properties properties = new Properties()
+properties.load(rootProject.file("$projectDir/src/main/resources/properties/bintray.properties").newDataInputStream())
+
+bintray {
+    user = properties.getProperty("bintray.user")
+    key = properties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
+    pkg {
+        repo = bintrayRepo
+        name = bintrayName
+        userOrg = properties.getProperty("bintray.org")
+        desc = libraryDescription
+        websiteUrl = siteUrl
+        vcsUrl = gitUrl
+        licenses = allLicenses
+        publish = true
+        publicDownloadNumbers = true
+        version {
+            desc = libraryDescription
+            gpg {
+                sign = true
+                passphrase = new String(System.console() != null ? System.console().readPassword("\nPlease enter key passphrase: ") : '')
+            }
+        }
+    }
+}
